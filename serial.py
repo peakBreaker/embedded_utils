@@ -20,7 +20,7 @@ def get_port_by_manufacturer(manufacturer):
 
 
 def read_debug(ser):
-    "Reads the output from serial and returns it"
+    "Reads the output from serial and cleans it up a bit"
     try:
         output = str(ser.readline(), 'utf-8')
         # print(output)
