@@ -69,11 +69,13 @@ def reset_devices():
     return False
 
 
-def get_port():
+def get_port(dev=None):
     "Lists information about a port - edit port for now"
-    # Check if we have a device conf
-    if 'device.conf' in os.listdir('./'):
-        with open('./device.conf', 'r') as f:
+    # choosing device TODO: There are better ways of doing this
+    print("GETTING PORT FOR :: %s" % dev)
+    conf_file = 'device.conf' if dev is "device" else 'default.conf'
+    if conf_file in os.listdir('./'):
+        with open(conf_file, 'r') as f:
             device = f.readline()
             user_decide = input("Press any key except q to connecting to " + device + " > ")
             if user_decide != 'q':
@@ -100,7 +102,7 @@ def get_port():
             print("Invalid argument!")
     
     # Write it to file
-    with open("./device.conf", 'w') as f:
+    with open(conf_file, 'w') as f:
         f.write(ports.get(select, 0).device)
     
     return ports.get(select, 0).device

@@ -50,7 +50,7 @@ def get_config(silent, cfg=None):
             print("Input type is %s" % cfg['input_type'])
             if input('Change input type? [Y/N] > ') is 'Y':
                 del cfg['input_type']
-        
+
         if 'input_type' not in list(cfg.keys()) and not silent:
             input_type = input('Get input from File or Serial? [S/F] > ')
             if ('S' not in input_type) or ('F' not in input_type):
@@ -85,8 +85,6 @@ def get_config(silent, cfg=None):
                     cfg['input_source'] = get_log()
                     print("PROTIP: Pipe the output from reading logs into less")
                     print("like this: $ python color_debug.py -s | less")
-
-        # TODO: Finally get the highlight mode and values
         
         return cfg
 
