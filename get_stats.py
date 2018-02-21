@@ -3,9 +3,10 @@ from serial import Serial
 from embedded_utils.serial import read_debug
 
 
-def get_battery_voltage(port, flag):
-    "Reads out uart from port and looks for the flag.  The flag is valid json \
-    with the values wanted by the programmer"
+def get_embedded_json(port, flag):
+    """ Reads out uart from port and looks for the flag.  The flag is valid json
+    with the values wanted by the programmer.
+    """
     with Serial(port, 115200, timeout=1) as ser:
         wd_parse_retries = 0
         while wd_parse_retries < 7:
