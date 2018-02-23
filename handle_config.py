@@ -89,7 +89,7 @@ def get_config(silent, cfg=None):
         return cfg
 
 
-def get_highlight(cfg):
+def get_highlight(cfg, Mode=None):
     """ Helper function
     
     Looks at the selected highlighting and highlight config and returns
@@ -97,12 +97,13 @@ def get_highlight(cfg):
     
     This enables multi mode highlighting"""
     # Parse the colors
+    mode_highlight = cfg.get(Mode, False)
     selected_mode = cfg.get('highlight_select', None)
     # print("Avaliable modes are %s" % cfg.get('highlight_modes'), None)
     # if input("Selected mode is %s. Change? [Y/N] > " % selected_mode) is 'Y'
 
     # Get the highlighting modes
-    mode_highlight = cfg.get(selected_mode, [{}])
+    mode_highlight = cfg.get(selected_mode, [{}]) if not mode_highlight else mode_highlight
     all_highlight = cfg.get('all', [{}])
 
     # Append all highlight on mode highlight so mode highligh goes first
@@ -136,7 +137,7 @@ def load_config(silent=False):
 
     # Finally save
     print("Program running with this config:")
-    print(cfg)
+    print(yaml.dump(cfg, default_flow_style=False))
     save_config(cfg)
 
     return cfg
