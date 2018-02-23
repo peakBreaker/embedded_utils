@@ -1,10 +1,7 @@
 from colored import fg, bg, attr
 from serial import Serial
 import argparse
-
-from libs.serial import get_port_by_name, get_port_by_manufacturer
-from libs.serial import get_port, read_debug
-from handle_config import load_config
+from embedded_utils.handle_config import load_config
 
 parser = argparse.ArgumentParser(description='Description of your program')
 parser.add_argument('-s', '--silent', help='Runs with config.yml without \

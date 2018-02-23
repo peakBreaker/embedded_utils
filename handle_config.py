@@ -1,7 +1,7 @@
 import yaml
 import os
 import re
-from libs.serial import get_port
+from embedded_utils.serial import get_port
 from glob import glob
 
 
@@ -90,7 +90,9 @@ def get_config(silent, cfg=None):
 
 
 def get_highlight(cfg):
-    """Looks at the selected highlighting and highlight config and returns
+    """ Helper function
+    
+    Looks at the selected highlighting and highlight config and returns
     a new configuration dict based on the set configs.
     
     This enables multi mode highlighting"""
@@ -100,14 +102,19 @@ def get_highlight(cfg):
     # if input("Selected mode is %s. Change? [Y/N] > " % selected_mode) is 'Y'
 
     # Get the highlighting modes
-    mode_highlight = cfg.get(selected_mode, {})
-    all_highlight = cfg.get('all', {})
+    mode_highlight = cfg.get(selected_mode, [{}])
+    all_highlight = cfg.get('all', [{}])
 
     # Append all highlight on mode highlight so mode highligh goes first
     mode_highlight += all_highlight
-    cfg['highlight'] = mode_highlight
     # print(cfg['highlight'])
-    return cfg
+    return mode_highlight
+
+
+def save_config(cfg):
+    with open("config.yml", 'w') as f:
+        f.write(yaml.dump(cfg, default_flow_style=False))
+
 
 def load_config(silent=False):
     "Loads the config.yml file in the directory and returns a dict of conf"
@@ -123,14 +130,13 @@ def load_config(silent=False):
     else:
         print("No config file, creating one")
         cfg = None
+
+    # Next evaluate the config
     cfg = get_config(silent, cfg)
 
     # Finally save
     print("Program running with this config:")
     print(cfg)
-    with open("config.yml", 'w') as f:
-        f.write(yaml.dump(cfg, default_flow_style=False))
+    save_config(cfg)
 
-    # Get the highlighting configs
-    cfg = get_highlight(cfg)
     return cfg
