@@ -6,25 +6,17 @@ import re
 import json
 
 
-def get_json_log(file):
+def get_log_line(file):
     "Generator for getting unpacked json data from logs one after another"
     with open(file, 'r') as f:
         for line in f:
             data_raw = json.loads(line)
             if "LOGS" in list(data_raw.keys())[0]:
+                lognum = re.search("(?<=LOGS_)\d+", list(data_raw.keys())[0])
+                lognum = int(lognum.group(0)) if lognum is not None else -1
                 data_raw = list(data_raw.values())[0]
-            print(data_raw)
-            # data = {'ts': data_raw['ts'],
-            #         'init_time': data_raw['init_data']['elapsed_time'] if
-            #         data_raw['init_data']['res'] == 1 else float('nan'),
-            #         'bat_val': data_raw['sensor_data']['value'] if
-            #         data_raw['sensor_data']['status'] == 4 else float('nan')}
-            
-            data = {'ts': data_raw['ts'],
-                    'init_time': data_raw['init_data']['elapsed_time'],
-                    'bat_val': data_raw['sensor_data']['value'] if
-                    data_raw['sensor_data']['status'] == 4 else float('nan')}
-            yield data
+                data_raw['lognum'] = lognum
+            yield data_raw
 
 def analyse_init_json():
     

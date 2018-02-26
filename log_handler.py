@@ -36,4 +36,4 @@ def get_log(**kw):
             print("You must type a number")
         elif log_select <= len(avaliable_logs) - 1:
             print("Selected %s" % avaliable_logs[log_select])
-            return avaliable_logs[log_select]
+            return [avaliable_logs[log_select]]
