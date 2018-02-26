@@ -10,7 +10,9 @@ from glob import glob
 def get_log(**kw):
 
     # Get the avaliable_logs TODO: Change from old to new
-    avaliable_logs = glob('./logs/device/*.%s' % ('json' if kw.get('json', False) else 'log'))
+    directory = kw.get('dir', './logs')
+    extension = kw.get('extension', 'json')
+    avaliable_logs = glob(directory + '/*.' + extension)
     if len(avaliable_logs) == 0:
         print("Found no logs!")
         return
