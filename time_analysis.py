@@ -4,32 +4,6 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import re
 import json
-from glob import glob
-
-
-def get_log(**kw):
-
-    # Get the avaliable_logs TODO: Change from old to new
-    directory = kw.get('dir', './logs')
-    extension = kw.get('extension', 'json')
-    avaliable_logs = glob(directory + '/*.' + extension)
-    if len(avaliable_logs) == 0:
-        print("Found no logs!")
-        return
-
-    while True:
-        # Print out avaliable_logs with index
-        for idx, log in enumerate(avaliable_logs):
-            print("%i : %s" % (idx, log))
-
-        # prompt user to select log
-        log_select = re.match(r'(\d+)', input("Select log by index > "))
-        log_select = int(log_select.groups()[0]) if log_select is not None else None
-        if log_select is None:
-            print("You must type a number")
-        elif log_select <= len(avaliable_logs) - 1:
-            print("Selected %s" % avaliable_logs[log_select])
-            return avaliable_logs[log_select]
 
 
 def get_json_log(file):
