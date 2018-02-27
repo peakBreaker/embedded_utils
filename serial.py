@@ -69,26 +69,30 @@ def reset_devices():
     return False
 
 
-def get_port(dev=None):
+def get_port(**kw):
     "Lists information about a port - edit port for now"
     # choosing device TODO: There are better ways of doing this
+    dev = kw.get('dev', None)
+    silent = kw.get('silent', False)
     print("GETTING PORT FOR :: %s" % dev)
     conf_file = 'device.conf' if dev is "device" else 'default.conf'
     if conf_file in os.listdir('./'):
         with open(conf_file, 'r') as f:
             device = f.readline()
-            user_decide = input("Press any key except q to connecting to " + device + " > ")
-            if user_decide != 'q':
+            user_decide = False
+            if not silent:
+                user_decide = input("Press any key except q to connecting to " + device + " > ")
+            if silent or user_decide != 'q':
                 print("Connecting to " + device)
                 return device
-    
+
     # First get the ports
     print("Avaliable devices:")
     ports = {}
     for idx, port in enumerate(list_ports.comports()):
         print(str(idx) + " - " + str(port))
         ports[idx] = port
-    
+
     # Then get user select
     select = None
     while True:
@@ -100,12 +104,13 @@ def get_port(dev=None):
             break
         else:
             print("Invalid argument!")
-    
+
     # Write it to file
     with open(conf_file, 'w') as f:
         f.write(ports.get(select, 0).device)
-    
+
     return ports.get(select, 0).device
-    
+
+
 if __name__ == '__main__':
     reset_modem()
