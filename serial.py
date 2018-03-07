@@ -19,14 +19,14 @@ def get_port_by_manufacturer(manufacturer):
     return port
 
 
-def read_debug(ser):
+def read_debug(ser, return_false=False):
     "Reads the output from serial and cleans it up a bit"
     try:
         output = str(ser.readline(), 'utf-8')
         # print(output)
     except UnicodeDecodeError:
         # print("Unable to parse output from modem")
-        output = ''
+        output = '' if not return_false else False
     finally:
         return output
 
