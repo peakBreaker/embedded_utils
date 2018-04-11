@@ -112,5 +112,48 @@ def get_port(**kw):
     return ports.get(select, 0).device
 
 
+def connect_serial(port=False, baud=115200):
+    "Helper function for getting the serial connection"
+    if not port:
+        port = get_port()
+    return serial.Serial(port, baud, timeout=1)
+
+
 if __name__ == '__main__':
     reset_modem()
+
+
+############################ MOCK TEST CLASS ################################
+# When creating application unittests, use this class instead of the module #
+# To get a mock serial object -- Its a simple little machine for now, but   #
+# I will make it more proper                                                #
+#############################################################################
+
+class mock_serial():
+    "Serial mocking class"
+    def __init__(self):
+        print("Initializing mock serial")
+        self.outputgen = self.read_debug_gen()
+
+    def __enter__(self):
+        print("Entered mock serial object")
+        return self
+
+    def read_debug_gen(self):
+        print("Initializing debug generator")
+        while True:
+            yield "Hello"
+            time.sleep(1)
+            yield "World"
+            time.sleep(1)
+        print("quitting debug generator")
+
+    def read_debug(self):
+        print("Reading debug")
+        return next(self.outputgen)
+
+    def __exit__(self, arg1, arg2, arg3):
+        print("Exited mock serial object .. got args :: ")
+        print("arg1 :: %s" % arg1)
+        print("arg2 :: %s" % arg2)
+        print("arg3 :: %s" % arg3)
