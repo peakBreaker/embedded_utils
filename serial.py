@@ -1,6 +1,7 @@
 from serial import Serial
 from serial.tools import list_ports
 from datetime import datetime
+import time
 import re
 import os
 
@@ -131,8 +132,9 @@ if __name__ == '__main__':
 
 class mock_serial():
     "Serial mocking class"
-    def __init__(self):
+    def __init__(self, *args):
         print("Initializing mock serial")
+        self._debug = args
         self.outputgen = self.read_debug_gen()
 
     def __enter__(self):
@@ -140,13 +142,10 @@ class mock_serial():
         return self
 
     def read_debug_gen(self):
-        print("Initializing debug generator")
         while True:
-            yield "Hello"
-            time.sleep(1)
-            yield "World"
-            time.sleep(1)
-        print("quitting debug generator")
+            for arg in self._debug:
+                yield arg
+                time.sleep(1)
 
     def read_debug(self):
         print("Reading debug")
