@@ -24,13 +24,15 @@ def send_cmd_get_resp(ser, cmd):
     ser.write(cmd + b'\r\n')
     responses = []
     while True:
-        line = read_debug(ser, True)
+        line = read_debug(ser, return_false=True)
         if line == '':
             break
+        elif not line:
+            pass
         else:
             # print(line)
             # print("Command in line? :: %s" % (str(cmd, 'utf-8') not in line))
-            responses.append(line if str(cmd, 'utf-8') not in line else None)
+            responses.append(line if str(cmd, 'utf-8') not in str(line) else None)
     responses = list(filter(None.__ne__, responses))
     # print("Responses :: ")
     # print(responses)

@@ -26,7 +26,7 @@ def read_debug(ser, return_false=False):
         output = str(ser.readline(), 'utf-8')
         # print(output)
     except UnicodeDecodeError:
-        # print("Unable to parse output from modem")
+        print("Unable to parse output from modem")
         output = '' if not return_false else False
     finally:
         return output
