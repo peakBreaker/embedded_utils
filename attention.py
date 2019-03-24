@@ -48,6 +48,7 @@ def send_cmd_persistent(ser, cmd, **kw):
         sleep(0.3)
         retval = send_cmd_get_resp(ser, cmd)
         if "OK\r\n" in retval:
+            print('Got OK')
             break
         else:
             iterations += 1
